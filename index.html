@@ -1,88 +1,648 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Estatus de Separación V2.0</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Colores personalizados basados en el logo */
-        .bg-afore-blue { background-color: #003366; } /* Azul oscuro del logo */
-        .text-afore-blue { color: #003366; }
-        .border-afore-blue { border-color: #003366; }
-        .hover\:bg-afore-blue-darker:hover { background-color: #002244; } /* Un azul más oscuro al hacer hover */
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Estatus de Separación V2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Colores personalizados basados en el logo */
+        .bg-afore-blue { background-color: #003366; } /* Azul oscuro del logo */
+        .text-afore-blue { color: #003366; }
+        .border-afore-blue { border-color: #003366; }
+        .hover\:bg-afore-blue-darker:hover { background-color: #002244; } /* Un azul más oscuro al hacer hover */
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-7xl w-full">
-        
-                <div id="logoContainer" class="flex justify-center mb-6 h-16"></div>
+    <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-7xl w-full">
+        
+        <!-- El logo en la PÁGINA WEB se carga dinámicamente con JS ahora -->
+        <div id="logoContainer" class="flex justify-center mb-6 h-16"></div>
 
-        <h1 class="text-3xl font-extrabold text-center text-afore-blue mb-4">
-            Estatus del Proceso de Separación de Cuentas
-        </h1>
-        <p class="text-center text-gray-600 mb-8 text-lg">
-            Genera la imagen personalizada del estado del trámite.
-        </p>
+        <h1 class="text-3xl font-extrabold text-center text-afore-blue mb-4">
+            Estatus del Proceso de Separación de Cuentas
+        </h1>
+        <p class="text-center text-gray-600 mb-8 text-lg">
+            Genera la imagen personalizada del estado del trámite.
+        </p>
 
-        
+        
 
 <form id="generatorForm" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 items-end">
-            <div class="md:col-span-1">
-                <label for="nameInput" class="block text-sm font-semibold text-gray-800 mb-1">
-                    Nombre del Trabajador
-                </label>
-                <input type="text" id="nameInput" value="Juan Pérez" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all">
-            </div>
+            <div class="md:col-span-1">
+                <label for="nameInput" class="block text-sm font-semibold text-gray-800 mb-1">
+                    Nombre del Trabajador
+                </label>
+                <input type="text" id="nameInput" value="Juan Pérez" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all">
+            </div>
 
-            <div class="md:col-span-1">
-                <label for="stageSelect" class="block text-sm font-semibold text-gray-800 mb-1">
-                    Selecciona la Etapa Actual
-                </label>
-                <select id="stageSelect" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:ring-blue-500 focus:border-blue-500 transition-all">
-                    
+            <div class="md:col-span-1">
+                <label for="stageSelect" class="block text-sm font-semibold text-gray-800 mb-1">
+                    Selecciona la Etapa Actual
+                </label>
+                <select id="stageSelect" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:ring-blue-500 focus:border-blue-500 transition-all">
+                    
+
 </select>
-            </div>
+            </div>
 
-            <button type="button" id="generateBtn" class="w-full md:col-span-1 bg-afore-blue text-white p-3 rounded-lg font-bold text-lg hover:bg-afore-blue-darker transition-all shadow-lg transform hover:scale-105 h-[46px]" disabled>
-                Cargando...
-            </button>
-        </form>
+            <button type="button" id="generateBtn" class="w-full md:col-span-1 bg-afore-blue text-white p-3 rounded-lg font-bold text-lg hover:bg-afore-blue-darker transition-all shadow-lg transform hover:scale-105 h-[46px]" disabled>
+                Cargando...
+            </button>
+        </form>
 
-        
+        
 
 <div class="border border-gray-300 rounded-xl overflow-hidden shadow-xl bg-gray-50 p-4">
-            <canvas id="timelineCanvas" class="w-full h-auto block mx-auto"></canvas>
-            
-            <a id="downloadBtn" href="#" download="estatus_separacion.png" class="hidden w-full bg-green-600 text-white p-3 rounded-lg font-bold text-lg hover:bg-green-700 transition-all shadow-lg text-center mt-6 transform hover:scale-105">
-                2. Descargar Imagen
-            </a>
-        </div>
+            <canvas id="timelineCanvas" class="w-full h-auto block mx-auto"></canvas>
+            
+            <a id="downloadBtn" href="#" download="estatus_separacion.png" class="hidden w-full bg-green-600 text-white p-3 rounded-lg font-bold text-lg hover:bg-green-700 transition-all shadow-lg text-center mt-6 transform hover:scale-105">
+                2. Descargar Imagen
+            </a>
+        </div>
 
-    </div> 
+    </div> 
 
 <script type="module">
-        // --- (Iconos SVG como STRINGS) ---
-        const ICON_SVG_STRINGS = {
-            icon1: `<svg width="152" height="159" viewBox="0 0 152 159" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M71.0216 74.7372L81.0718 83.5187L14.5941 152.946C12.0719 155.58 7.84454 155.77 5.09962 153.371C2.2945 150.92 2.10805 146.709 4.68547 144.017L71.0216 74.7372Z" fill="#FFDD35"/>
-<path d="M79.6267 83.5833L13.852 152.277C11.7079 154.516 8.11342 154.677 5.77989 152.639C3.39524 150.555 3.23682 146.974 5.42794 144.686L71.083 76.1181L79.6267 83.5833Z" stroke="black" stroke-width="2"/>
-<path d="M68 97.2305L59 89.7305L64 84.7305L72 91.2305L68 97.2305Z" fill="black"/>
-<ellipse cx="40.4368" cy="39.3516" rx="40.4368" ry="39.3516" transform="matrix(0.974778 0.223178 -0.236415 0.971652 68.8613 4.26367)" fill="#F3FAFF"/>
-<mask id="path-5-inside-1_3188_27499" fill="white">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M86.7394 101.572C115.259 108.102 143.835 90.9683 150.567 63.3031C157.298 35.6379 139.635 7.91759 111.115 1.38796C82.5959 -5.14166 54.0195 11.9921 47.2882 39.6573C40.557 67.3224 58.2198 95.0428 86.7394 101.572ZM89.6287 89.7164C111.398 94.7006 133.211 81.6221 138.349 60.505C143.487 39.3878 130.005 18.2284 108.235 13.2443C86.4659 8.26015 64.6532 21.3386 59.5151 42.4558C54.377 63.5729 67.8593 84.7323 89.6287 89.7164Z"/>
-</mask>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M86.7394 101.572C115.259 108.102 143.835 90.9683 150.567 63.3031C157.298 35.6379 139.635 7.91759 111.115 1.38796C82.5959 -5.14166 54.0195 11.9921 47.2882 39.6573C40.557 67.3224 58.2198 95.0428 86.7394 101.572ZM89.6287 89.7164C111.398 94.7006 133.211 81.6221 138.349 60.505C143.487 39.3878 130.005 18.2284 108.235 13.2443C86.4659 8.26015 64.6532 21.3386 59.5151 42.4558C54.377 63.5729 67.8593 84.7323 89.6287 89.7164Z" fill="#FFDD35"/>
-<path d="M150.567 63.3031L152.51 63.7759L150.567 63.3031ZM86.7394 101.572L86.293 103.522H86.293L86.7394 101.572ZM111.115 1.38796L111.562 -0.561591L111.115 1.38796ZM47.2882 39.6573L49.2316 40.1301L47.2882 39.6573ZM138.349 60.505L136.406 60.0321V60.0321L138.349 60.505ZM89.6287 89.7164L90.075 87.7669L89.6287 89.7164ZM59.5151 42.4558L61.4584 42.9286L59.5151 42.4558ZM148.623 62.8303C142.162 89.384 114.688 105.92 87.1857 99.6228L86.293 103.522C115.83 110.284 145.508 92.5526 152.51 63.7759L148.623 62.8303ZM110.669 3.33752C138.153 9.63002 155.079 36.2992 148.623 62.8303L152.51 63.7759C159.517 34.9767 141.117 6.20516 111.562 -0.561591L110.669 3.33752ZM49.2316 40.1301C55.6924 13.5764 83.1666 -2.95925 110.669 3.33752L111.562 -0.561591C82.0252 -7.32407 52.3466 10.4078 45.3449 39.1844L49.2316 40.1301ZM87.1857 99.6228C59.7019 93.3304 42.7762 66.6611 49.2316 40.1301L45.3449 39.1844C38.3377 67.9837 56.7378 96.7552 86.293 103.522L87.1857 99.6228ZM136.406 60.0321C131.538 80.0379 110.827 92.5182 90.075 87.7669L89.1823 91.666C111.969 96.883 134.884 83.2064 140.292 60.9778L136.406 60.0321ZM107.789 15.1939C128.523 19.9409 141.268 40.049 136.406 60.0321L140.292 60.9778C145.706 38.7265 131.487 16.516 108.682 11.2947L107.789 15.1939ZM61.4584 42.9286C66.326 22.9228 87.0366 10.4426 107.789 15.1939L108.682 11.2947C85.8952 6.07774 62.9803 19.7543 57.5718 41.9829L61.4584 42.9286ZM90.075 87.7669C69.3414 83.0198 56.5963 62.9117 61.4584 42.9286L57.5718 41.9829C52.1578 64.2342 66.3773 86.4447 89.1823 91.666L90.075 87.7669Z" fill="black" mask="url(#path-5-inside-1_3188_27499)"/>
-<path d="M115.938 26.6904C127.709 32.8337 132.914 46.1952 128.865 58.096" stroke="black" stroke-width="2"/>
-</svg>`,
-            icon2: `<svg width="122" height="120" viewBox="0 0 122 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_3188_25259)">
-<path d="M97.1413 8.09342V27.6172V83.8077V112.855C97.1413 117.808 93.9667 119.046 92.3794 119.046H6.18925C2.37974 119.046 1.1099 114.919 0.951172 112.855V8.09342C0.951172 2.76009 4.44322 1.42676 6.18925 1.42676H92.3794C96.9508 1.42676 97.4587 5.8712 97.1413 8.09342Z" fill="white"/>
-<path d="M49.5866 16.2993C51.2394 16.2993 52.6359 17.3626 52.6359 18.6218C52.6359 19.5785 53.4314 20.3535 54.4129 20.3535C55.3952 20.3535 56.1907 19.5785 56.1907 18.6218C56.1907 15.9716 54.1433 13.737 51.364 13.0543L51.364 10.7786C51.364 9.82192 50.568 9.04687 49.5866 9.04687C48.6047 9.04687 47.8092 9.82192 47.8092 10.7786L47.8092 13.0543C45.029 13.737 42.9829 15.9711 42.9829 18.6218C42.9829 21.7445 45.8236 24.2907 49.3592 24.3965C49.3939 24.3982 49.4269 24.4065 49.4616 24.4065C51.1424 24.4065 52.5105 25.4468 52.5105 26.7277C52.5105 27.9848 51.1144 29.0485 49.4616 29.0485C47.8092 29.0485 46.4122 27.9852 46.4122 26.7277C46.4122 25.7702 45.6167 24.9956 44.6348 24.9956C43.6529 24.9956 42.8574 25.7702 42.8574 26.7277C42.8574 29.4157 44.9663 31.6753 47.8083 32.3203L47.8083 33.9814C47.8083 34.9381 48.6038 35.7135 49.5857 35.7135C50.5671 35.7135 51.3631 34.9381 51.3631 33.9814L51.3631 32.2644C54.0792 31.5466 56.0643 29.3368 56.0643 26.7277C56.0643 23.6045 53.2232 21.0592 49.6876 20.9534C49.6533 20.9517 49.6208 20.943 49.5857 20.943C47.9324 20.943 46.5363 19.8797 46.5363 18.6214C46.5372 17.363 47.9333 16.2993 49.5866 16.2993Z" fill="#006FB9"/>
-<path d="M30.
+        // --- (Iconos SVG como Path2D) ---
+        const ICONS = {
+            search: new Path2D("M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"), // 1. Revisión
+            chart: new Path2D("M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6zM13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"), // 2. Análisis
+            folder: new Path2D("M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"), // 3. Recopilación
+            badge: new Path2D("M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"), // 4. Concluido
+            user: new Path2D("M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"), // 5. Actualización Info
+            cash: new Path2D("M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.75C2.25 5.25 2.25 5.25 2.25 5.25v-.75C2.25 4.5 3 4.5 3 4.5h.75A.75.75 0 014.5 5.25v.75h-.75m0 0H3m1.5 0H1.5m0 0h.75m1.5 0h.75m10.5-1.5V6a.75.75 0 00-.75-.75h-.75m0 0v.75c0 .414 0 .414 0 .414v.75c0 .414.75.414.75.414h.75a.75.75 0 00.75-.75V6h-.75m0 0h.75M12 12.75h.008v.008H12v-.008zM12 15h.008v.008H12v-.008zM12 17.25h.008v.008H12v-.008zM15 12.75h.008v.008H15v-.008zM15 15h.008v.008H15v-.008zM15 17.25h.008v.008H15v-.008zM18 12.75h.008v.008H18v-.008zM18 15h.008v.008H18v-.008zM18 17.25h.008v.008H18v-.008zM21.75 9v.75a.75.75 0 01-.75.75h-.75m0 0v.75c0 .414 0 .414 0 .414v.75c0 .414.75.414.75.414h.75a.75.75 0 00.75-.75v-.75h-.75m0 0h.75m-1.5 0h.75M3.75 9v.75a.75.75 0 01-.75.75h-.75m0 0v.75c0 .414 0 .414 0 .414v.75c0 .414.75.414.75.414h.75a.75.75 0 00.75-.75v-.75h-.75m0 0h.75m-1.5 0h.75"), // 6. Actualización Saldos
+            flag: new Path2D("M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"), // 7. Etapa Final
+            envelope: new Path2D("M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75") // 8. Notificación
+        };
+
+        // --- Icono de Foco Personalizado ---
+        const CUSTOM_ICON_LIGHTBULB = {
+            bulb: new Path2D("M81.5259 39.8469C81.5259 18.1831 63.1531 0.665953 40.6228 1.00484C19.2804 1.32523 1.72496 17.9551 1.02248 38.5345C0.722336 47.3084 3.44282 55.4539 8.25157 62.0837C14.4653 70.6482 17.6392 80.9194 17.6392 91.3693V91.7821H64.8901V91.3693C64.8901 80.9625 67.9874 70.6913 74.2011 62.1823C78.8118 55.8668 81.5259 48.1649 81.5259 39.8469Z"),
+            base: new Path2D("M17.8203 90.6953V104.922C17.8203 111.461 23.4535 116.762 30.4025 116.762H31.4435C32.7273 119.268 35.4417 120.999 38.5968 120.999H45.5202C48.6753 120.999 51.3961 119.262 52.6735 116.756C59.5394 116.666 65.0768 111.407 65.0768 104.928V90.6953H17.8203Z"),
+            line1: new Path2D("M18.3691 100.474H64.5531"),
+            filament1: new Path2D("M45.4316 90.6783L53.7847 47.6465"),
+            filament2: new Path2D("M28.5234 47.7451L37.8089 90.6784"),
+            filamentWave: new Path2D("M28.5781 47.6094C30.6728 47.6094 30.6728 53.7709 32.7674 53.7709C34.8621 53.7709 34.8621 47.6094 36.9567 47.6094C39.0514 47.6094 39.0514 53.7709 41.146 53.7709C43.2407 53.7709 43.2407 47.6094 45.3353 47.6094C47.43 47.6094 47.43 53.7709 49.531 53.7709C51.632 53.7709 51.6256 47.6094 53.7267 47.6094"),
+            rect: { x: 17.5781, y: 87.8418, width: 47.3682, height: 2.36841 }
+        };
+
+        // --- NUEVO! LOGO SVG COMO STRING ---
+        // Aquí está el código SVG completo que proporcionaste
+        const LOGO_SVG_STRING = `<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="510" height="146">
+<path d="M0 0 C168.3 0 336.6 0 510 0 C510 48.18 510 96.36 510 146 C341.7 146 173.4 146 0 146 C0 97.82 0 49.64 0 0 Z " fill="#FEFEFE" transform="translate(0,0)"/>
+<path d="M0 0 C4.33729795 2.25205855 7.13397371 4.4386024 9 9 C9.79079328 15.02979873 8.75439911 18.26941867 5.484375 23.3359375 C3.20485983 25.89139398 1.13644956 26.86606834 -2.25390625 27.265625 C-3.01574219 27.26046875 -3.77757812 27.2553125 -4.5625 27.25 C-5.70912109 27.25773437 -5.70912109 27.25773437 -6.87890625 27.265625 C-9 27 -9 27 -12 25 C-12 29.62 -12 34.24 -12 39 C-14.31 39 -16.62 39 -19 39 C-19 26.46 -19 13.92 -19 1 C-16 1 -13 1 -10 1 C-6.38069302 -0.20643566 -3.80768995 -0.32268559 0 0 Z " fill="#303F75" transform="translate(398,55)"/>
+<path d="M0 0 C2.98864584 1.64869512 5.51685685 3.54156788 6.62890625 6.8984375 C8.22135679 15.91673636 8.22135679 15.91673636 5.765625 20.10546875 C3.28454511 23.08399287 1.73449427 24.75516858 -2 26 C-9.05061082 26.47469459 -9.05061082 26.47469459 -12 25 C-12.33 29.29 -12.66 33.58 -13 38 C-15.31 38 -17.62 38 -20 38 C-20 25.46 -20 12.92 -20 0 C-17.03 0 -14.06 0 -11 0 C-7.47918669 -1.76040666 -3.72814364 -0.91952536 0 0 Z " fill="#2E3D74" transform="translate(369,56)"/>
+<path d="M0 0 C2.64 0 5.28 0 8 0 C11.44043102 7.28185021 14.13350379 14.76414946 16.75 22.375 C17.16121094 23.54933594 17.57242188 24.72367188 17.99609375 25.93359375 C18.38410156 27.05636719 18.77210938 28.17914063 19.171875 29.3359375 C19.6992627 30.86033447 19.6992627 30.86033447 20.23730469 32.41552734 C21 35 21 35 21 38 C18.69 38 16.38 38 14 38 C12.5393715 35.35261084 12 34.10551666 12 31 C7.05 31.33 2.1 31.66 -3 32 C-3.66 33.98 -4.32 35.96 -5 38 C-7.64 38 -10.28 38 -13 38 C-8.80181427 25.28372913 -4.51138381 12.60873937 0 0 Z " fill="#303F75" transform="translate(149,44)"/>
+<path d="M0 0 C4.81252448 2.55466608 8.92740988 6.47801783 10.7109375 11.69140625 C10.7728125 12.22765625 10.8346875 12.76390625 10.8984375 13.31640625 C3.63976242 13.93154821 3.63976242 13.93154821 -0.0390625 10.87890625 C-0.7196875 10.03328125 -1.4003125 9.18765625 -2.1015625 8.31640625 C-3.66189873 6.75607002 -5.19103386 7.10933066 -7.3515625 7.06640625 C-11.4107518 7.12448686 -13.95655956 7.55261578 -17.1015625 10.31640625 C-19.39635548 14.25033708 -19.56547238 17.83194411 -19.1015625 22.31640625 C-17.73155023 25.57341656 -16.37362309 28.68037596 -13.1015625 30.31640625 C-8.18159322 30.84758877 -4.32828653 31.06746178 -0.0390625 28.44140625 C1.93519026 26.46969462 1.93519026 26.46969462 2.8984375 24.31640625 C5.5384375 24.31640625 8.1784375 24.31640625 10.8984375 24.31640625 C9.6361376 30.2071391 6.6599095 32.98136679 1.8984375 36.31640625 C-3.06645523 39.35974008 -8.47144469 39.00300598 -14.1015625 38.31640625 C-19.55128291 36.39874686 -23.4464493 32.70067874 -26.2578125 27.6953125 C-28.31186129 21.90403606 -27.85357748 15.80745587 -26.1015625 10.00390625 C-19.57690888 1.23640295 -11.04217473 -3.59178546 0 0 Z " fill="#303F75" transform="translate(305.1015625,43.68359375)"/>
+<path d="M0 0 C3.31706967 2.09692759 6.22874044 4.45748089 8 8 C8.45866031 14.8799047 7.56241294 18.95713463 3 24.375 C-1.58838883 26.86037728 -5.90069785 26.87480697 -11 26 C-14.25284065 24.37357967 -16.22740366 22.05354046 -18.375 19.125 C-19.67156778 14.71666955 -19.40662687 11.09147212 -17.8125 6.8125 C-13.20337378 -0.33959242 -7.96023782 -2.15562721 0 0 Z " fill="#F6D219" transform="translate(77,56)"/>
+<path d="M0 0 C3.79742389 2.08486017 6.95603823 4.12723033 9 8 C10.00841547 12.46583992 10.3825574 14.85232781 8.9375 19.1875 C6.03654031 23.39857052 3.69575389 26.45646588 -1.40234375 27.484375 C-5.76438051 27.72051534 -9.00170814 27.51090681 -12.5 24.75 C-16.51802444 20.33017311 -17.47311893 17.13419471 -17.30859375 11.25 C-16.81026209 7.61659447 -15.47187713 5.66202153 -13 3 C-8.62094965 0.56719425 -5.00081149 -0.74480171 0 0 Z " fill="#303F75" transform="translate(204,55)"/>
+<path d="M0 0 C3.56996436 2.01003175 7.13553195 4.2710639 9 8 C9.52071898 13.65781204 9.74744693 18.41978709 6 23 C3.61772704 25.77931845 1.67689882 26.70894064 -1.98046875 27.34375 C-6.68273728 27.67665397 -9.71688614 27.06920446 -13.5625 24.25 C-16.86825203 21.00375151 -17.60627015 18.53757137 -17.8125 13.9375 C-17.55011158 10.12571183 -17.12768694 7.40860057 -14.75 4.375 C-10.14665886 0.3993872 -6.21528231 -1.32144741 0 0 Z " fill="#2F3E74" transform="translate(336,55)"/>
+<path d="M0 0 C3.68657736 2.46028908 6.01078719 4.58777012 6.9921875 9.05859375 C6.9921875 11.03859375 6.9921875 13.01859375 6.9921875 15.05859375 C0.3921875 15.05859375 -6.2078125 15.05859375 -13.0078125 15.05859375 C-12.6778125 16.37859375 -12.3478125 17.69859375 -12.0078125 19.05859375 C-8.3778125 19.05859375 -4.7478125 19.05859375 -1.0078125 19.05859375 C-1.0078125 18.39859375 -1.0078125 17.73859375 -1.0078125 17.05859375 C1.3021875 17.05859375 3.6121875 17.05859375 5.9921875 17.05859375 C5.75845763 20.21394699 4.7220132 21.37142715 2.6171875 23.80859375 C-1.11276236 26.70966586 -4.77853773 26.76594017 -9.37890625 26.546875 C-13.60309888 25.76229242 -15.19835009 24.30028114 -18.0078125 21.05859375 C-20.36166867 17.09983565 -21.110713 12.55250174 -20.0078125 8.05859375 C-15.40948643 0.95208983 -8.58830717 -4.02681328 0 0 Z " fill="#303F75" transform="translate(429.0078125,55.94140625)"/>
+<path d="M0 0 C4.15879693 2.29923089 7.46916347 4.40749041 9 9 C9 11.31 9 13.62 9 16 C2.4 16 -4.2 16 -11 16 C-8.59165543 20.16420059 -8.59165543 20.16420059 -5.73828125 20.390625 C-4.53751953 20.32101563 -4.53751953 20.32101563 -3.3125 20.25 C-2.10013672 20.19585937 -2.10013672 20.19585937 -0.86328125 20.140625 C-0.24839844 20.09421875 0.36648437 20.0478125 1 20 C1 19.34 1 18.68 1 18 C3.31 18 5.62 18 8 18 C7.4568634 21.80195622 5.84334437 23.50130343 3 26 C-0.69462752 27.84731376 -4.95890146 27.33835422 -9 27 C-13.2372552 25.43405786 -15.19880299 22.90920849 -17.26953125 18.89453125 C-18.4908267 15.72700027 -18.4855504 13.33815898 -18 10 C-14.36127043 2.862492 -8.32731281 -2.09345853 0 0 Z " fill="#304075" transform="translate(253,55)"/>
+<path d="M0 0 C0 1.98 0 3.96 0 6 C-1.32 6.33 -2.64 6.66 -4 7 C-4.33 8.65 -4.66 10.3 -5 12 C-3.35 12 -1.7 12 0 12 C0 13.98 0 15.96 0 18 C-1.65 18 -3.3 18 -5 18 C-5 24.6 -5 31.2 -5 38 C-7.31 38 -9.62 38 -12 38 C-12 31.4 -12 24.8 -12 18 C-13.65 18 -15.3 18 -17 18 C-17 16.02 -17 14.04 -17 12 C-15.35 12 -13.7 12 -12 12 C-11.96261719 11.38511719 -11.92523438 10.77023438 -11.88671875 10.13671875 C-11.82097656 9.32847656 -11.75523437 8.52023438 -11.6875 7.6875 C-11.62949219 6.88699219 -11.57148438 6.08648437 -11.51171875 5.26171875 C-10.05791642 -1.1638656 -5.47657526 -0.26933977 0 0 Z " fill="#2E3D73" transform="translate(186,44)"/>
+<path d="M0 0 C2.64 0 5.28 0 8 0 C8 12.87 8 25.74 8 39 C5.36 39 2.72 39 0 39 C0 26.13 0 13.26 0 0 Z " fill="#425081" transform="translate(439,43)"/>
+<path d="M0 0 C2.31 0 4.62 0 7 0 C7.33 0.66 7.66 1.32 8 2 C8.66 1.34 9.32 0.68 10 0 C13.625 -0.125 13.625 -0.125 17 0 C17 1.98 17 3.96 17 6 C15.88625 6.12375 14.7725 6.2475 13.625 6.375 C9.96896323 6.6465813 9.96896323 6.6465813 8 9 C7.69324768 11.89967757 7.48826629 14.71783178 7.375 17.625 C7.33632812 18.42679688 7.29765625 19.22859375 7.2578125 20.0546875 C7.16346069 22.03607556 7.08063785 24.01800645 7 26 C4.69 26 2.38 26 0 26 C0 17.42 0 8.84 0 0 Z " fill="#2D3D73" transform="translate(217,56)"/>
+<path d="M0 0 C2.50041894 0.08168338 3.83455801 0.19140582 6.0625 1.375 C7.65154125 4.45376742 7.42023097 6.91405579 7.0625 10.3125 C6 12.75 6 12.75 4.0625 14.3125 C0.625 14.875 0.625 14.875 -2.9375 14.3125 C-5.4375 12.25 -5.4375 12.25 -6.9375 9.3125 C-6.73458297 3.3264476 -6.40780043 0.50855559 0 0 Z " fill="#F3F4F7" transform="translate(361.9375,61.6875)"/>
+<path d="M0 0 C2 1.0625 2 1.0625 3 3 C3.5 6.4375 3.5 6.4375 3 10 C0.9375 12.5 0.9375 12.5 -2 14 C-5.6875 13.9375 -5.6875 13.9375 -9 13 C-11.46324069 9.30513897 -11.38991688 7.36706908 -11 3 C-8.82986072 -1.20464485 -4.15736573 -0.61494368 0 0 Z " fill="#F4F5F7" transform="translate(397,62)"/>
+<path d="M0 0 C1.9375 1.0625 1.9375 1.0625 3 3 C3.50030235 6.93094707 3.5996142 9.1005787 1.375 12.4375 C-1.71685231 14.47161336 -3.36367425 14.60605429 -7 14 C-9.375 12.375 -9.375 12.375 -11 10 C-11.60605429 6.36367425 -11.47161336 4.71685231 -9.4375 1.625 C-6.1005787 -0.5996142 -3.93094707 -0.50030235 0 0 Z " fill="#F6D117" transform="translate(116,62)"/>
+<path d="M0 0 C2.375 1.0625 2.375 1.0625 4 3 C4.57491549 6.95254396 4.61372366 9.07941451 2.375 12.4375 C-0.66541695 14.43777431 -2.4227467 14.45667063 -6 14 C-9 12 -9 12 -9.9375 8.125 C-10.20860552 5.01858256 -10.15042031 4.2406725 -8.4375 1.5 C-5.32176494 -0.41737542 -3.60361708 -0.52552749 0 0 Z " fill="#F6D21B" transform="translate(98,62)"/>
+<path d="M0 0 C3.625 0.375 3.625 0.375 6.125 1.9375 C7.625 4.375 7.625 4.375 7.625 7.9375 C6.625 11.375 6.625 11.375 4.875 13.3125 C2.10208502 14.62193207 0.64980283 14.97996057 -2.375 14.375 C-4.75 12.3125 -4.75 12.3125 -6.375 9.375 C-6.18819799 3.86434072 -5.98170158 0.66463351 0 0 Z " fill="#F1F2F5" transform="translate(331.375,61.625)"/>
+<path d="M0 0 C2.375 1.625 2.375 1.625 4 4 C4.44912849 7.14389944 4.504106 9.05480125 3 11.875 C-0.37806895 13.77516379 -3.16618269 13.36512546 -7 13 C-9.46324069 9.30513897 -9.38991688 7.36706908 -9 3 C-6.84532543 -0.71082843 -4.00794956 -0.57256422 0 0 Z " fill="#F7F8FA" transform="translate(203,62)"/>
+<path d="M0 0 C2 1 2 1 2.8515625 2.9609375 C3.10679687 3.75757813 3.36203125 4.55421875 3.625 5.375 C3.88539063 6.16648437 4.14578125 6.95796875 4.4140625 7.7734375 C5 10 5 10 5 13 C2.03 13 -0.94 13 -4 13 C-3.50269348 8.02693484 -2.44697666 4.36200187 0 0 Z " fill="#EDEFF3" transform="translate(153,55)"/>
+<path d="M0 0 C6.6 0 13.2 0 20 0 C19.67 1.32 19.34 2.64 19 4 C19 3.34 19 2.68 19 2 C16.69 2 14.38 2 12 2 C12 2.66 12 3.32 12 4 C8.95016004 5.52491998 6.3576631 5.23562548 3 5 C1.0625 3.625 1.0625 3.625 0 2 C0 1.34 0 0.68 0 0 Z " fill="#EDEEF3" transform="translate(242,71)"/>
+<path d="M0 0 C6.6 0 13.2 0 20 0 C19.67 0.66 19.34 1.32 19 2 C16.69 2 14.38 2 12 2 C12 2.66 12 3.32 12 4 C8.95016004 5.52491998 6.3576631 5.23562548 3 5 C1.0625 3.625 1.0625 3.625 0 2 C0 1.34 0 0.68 0 0 Z " fill="#EDEEF3" transform="translate(416,71)"/>
+<path d="M0 0 C3.47214266 0.27232491 4.7550428 0.8175428 7.1875 3.25 C7.1875 3.91 7.1875 4.57 7.1875 5.25 C2.8975 5.25 -1.3925 5.25 -5.8125 5.25 C-3.33575581 0.29651163 -3.33575581 0.29651163 0 0 Z " fill="#CDD1DE" transform="translate(421.8125,60.75)"/>
+<path d="M0 0 C1.134375 0.28875 2.26875 0.5775 3.4375 0.875 C4.0975 2.195 4.7575 3.515 5.4375 4.875 C1.4775 4.875 -2.4825 4.875 -6.5625 4.875 C-6.5625 3.885 -6.5625 2.895 -6.5625 1.875 C-3.5625 -0.125 -3.5625 -0.125 0 0 Z " fill="#D5D8E3" transform="translate(249.5625,61.125)"/>
+<path d="M0 0 C0.66 0.33 1.32 0.66 2 1 C1.360625 1.556875 0.72125 2.11375 0.0625 2.6875 C-2.19680987 5.22066561 -2.63149047 6.68341424 -3 10 C-3.33 10 -3.66 10 -4 10 C-4.25 7.25 -4.25 7.25 -4 4 C-2 1.625 -2 1.625 0 0 Z " fill="#F7DA45" transform="translate(109,62)"/>
+</svg>`;
+        
+        // --- NUEVO! Objeto Imagen para el Logo ---
+        const logoImage = new Image();
+
+        // --- CONFIGURACIÓN DE LA LÍNEA DE TIEMPO (V3 - DISEÑO DE PANEL) ---
+        const STAGES = [
+            { id: 1, name: "1", longName: "Revisión del Trámite.", icon: ICONS.search, desc: "Estamos validando que la documentación que proporcionaste esté completa y cumpla con los requisitos necesarios para poder iniciar el proceso de separación de cuentas." },
+            { id: 2, name: "2", longName: "Proceso de Análisis para determinar posible invasión.", icon: ICONS.chart, desc: "Tu cuenta se encuentra en la etapa de análisis para determinar si existe alguna invasión de datos o de recursos." },
+            { id: 3, name: "3", longName: "Recopilación de la información.", icon: ICONS.folder, desc: "Estamos en espera de recabar información histórica de tu cuenta individual por parte de otras administradoras." },
+            { id: 4, name: "4", longName: "Análisis concluído (procedente/no procedente).", icon: ICONS.badge, desc: "Se ha concluido el ánalisis de tu trámite, el cual se ha determinado como procedente/no procedente." },
+            { id: 5, name: "5", longName: "Actualización de la información de la cuenta individual.", icon: ICONS.user, desc: "Tu trámite se encuentra en la etapa de actualización de datos con base a lo confirmado en tu solicitud." },
+            { id: 6, name: "6", longName: "Actualización de saldos de la cuenta individual.", icon: ICONS.cash, desc: "Nos encontramos actualizando los saldos de tu cuenta individual considerando la totalidad de los recursos identificados." },
+            { id: 7, name: "7", longName: "Etapa final del proceso de Separación de Cuentas.", icon: ICONS.flag, desc: "Tu trámite ya está en la etapa final del proceso de separación de cuentas." },
+            { id: 8, name: "8", longName: "Notificación de Conclusión de Separación de Cuentas.", icon: ICONS.envelope, desc: "Tu trámite ha concluido exitosamente. Se genera una constancia de conclusión." }
+        ];
+
+        // --- CONSTANTES DE DIBUJO (V3) ---
+        const CANVAS_WIDTH = 1200;
+        const CANVAS_PADDING_Y_TOP = 230; // Aumentado para dar espacio al logo + títulos
+        const CARD_GRID_PADDING = 40;
+        const CARD_WIDTH = (CANVAS_WIDTH - CARD_GRID_PADDING * 5) / 4; // 4 tarjetas con 5 espacios de padding
+        const CARD_HEIGHT = 220;
+        const CARD_RADIUS = 16;
+        const NUM_COLS = 4;
+        const NUM_ROWS = 2;
+        const ROW_GAP = 50;
+        // Altura base, sin la nota legal
+        const BASE_CANVAS_HEIGHT = CANVAS_PADDING_Y_TOP + (NUM_ROWS * CARD_HEIGHT) + ((NUM_ROWS - 1) * ROW_GAP) + CARD_GRID_PADDING; 
+        const NOTE_AREA_HEIGHT = 100; // Altura del área de la nota legal
+        const NOTE_TEXT = "Es importante tener en cuenta que el tiempo estimado para el proceso la Separación de Cuentas es de aproximadamente 30 días hábiles. Sin embargo, te informamos que este periodo podría extenderse en caso de que los institutos involucrados requieran un tiempo adicional para completar las validaciones necesarias.";
+
+
+        // Colores y Fuentes (¡Actualizados con colores Afore Coppel!)
+        const COLORS = {
+            BG: '#FFFFFF', // Fondo blanco
+            TEXT_PRIMARY: '#003366', // Azul oscuro de Afore Coppel
+            TEXT_SECONDARY: '#6B7280', // gray-500
+            LINE: '#D1D5DB', // gray-300
+            FUTURE_FILL: '#F9FAFB', // gray-50
+            FUTURE_STROKE: '#E5E7EB', // gray-200
+            DONE_FILL: '#F0FDF4', // green-50
+            DONE_STROKE: '#10B981', // green-500 (Done)
+            DONE_ICON: '#16A34A', // green-600
+            ACTIVE_FILL: '#EEF4FF', // Un azul claro personalizado
+            ACTIVE_STROKE: '#003366', // Azul oscuro de Afore Coppel para etapa activa
+            ACTIVE_BADGE: '#FDB913', // Amarillo de Afore Coppel para el puntero
+            WHITE: '#FFFFFF',
+            NOTE_BG: '#F0F4F8', // Un azul claro sutil de la paleta Afore Coppel
+            NOTE_STROKE: '#003366', // Azul oscuro de Afore Coppel para el borde
+            NOTE_ICON: '#003366', // Azul oscuro para el icono
+            NOTE_TEXT: '#4B5563', // gray-600
+        };
+        const FONTS = {
+            TITLE: 'bold 32px Inter', // Reducido de 36px para que quepa el título largo
+            SUBTITLE: '22px Inter',
+            CARD_NUMBER: 'bold 20px Inter',
+            CARD_TITLE: 'bold 18px Inter',
+            CARD_STATUS: 'bold 14px Inter',
+            BADGE: 'bold 16px Inter',
+            NOTE_ICON: 'bold 30px Inter',
+            NOTE_TEXT: '14px Inter'
+        };
+
+        // --- LÓGICA DE LA APLICACIÓN ---
+        window.onload = function() {
+            // Obtenemos todos los elementos del DOM
+            const canvas = document.getElementById('timelineCanvas');
+            const ctx = canvas.getContext('2d');
+            const nameInput = document.getElementById('nameInput');
+            const stageSelect = document.getElementById('stageSelect');
+            const generateBtn = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const logoContainer = document.getElementById('logoContainer');
+
+            // --- LÓGICA DE CARGA DEL LOGO (Infalible) ---
+            // 1. Crear la URL de datos a partir del string SVG
+            // Usamos encodeURIComponent para manejar caracteres especiales de forma segura
+            const logoDataUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(LOGO_SVG_STRING);
+            
+            // 2. Asignar la URL al objeto Imagen y al contenedor HTML
+            logoImage.src = logoDataUrl;
+            logoContainer.innerHTML = `<img src="${logoDataUrl}" alt="Logo Afore Coppel" class="h-16 object-contain">`;
+
+            // 3. Manejador OnLoad: Habilitar todo cuando el logo esté listo
+            logoImage.onload = () => {
+                generateBtn.disabled = false;
+                generateBtn.textContent = "1. Generar Imagen";
+                // Dibujar el estado inicial
+                drawTimeline(nameInput.value || "Juan Pérez", stageSelect.value || 3, logoImage);
+            };
+            
+            // 4. Manejador OnError (contingencia)
+            logoImage.onerror = (err) => {
+                console.error("Error al cargar el logo SVG desde la Data URL:", err);
+                generateBtn.disabled = false;
+                generateBtn.textContent = "Generar (Sin Logo)";
+                // Dibujar el estado inicial sin el logo
+                drawTimeline(nameInput.value || "Juan Pérez", stageSelect.value || 3, null);
+            };
+
+
+            // 1. Llenamos el menú <select> con las etapas
+            STAGES.forEach(stage => {
+                const option = document.createElement('option');
+                option.value = stage.id;
+                option.textContent = `${stage.id}. ${stage.longName}`; // Usamos el nombre largo para el dropdown
+                stageSelect.appendChild(option);
+            });
+            // Seleccionamos la Etapa 3 por defecto
+            stageSelect.value = "3";
+
+            // Función para dividir texto en líneas
+            function wrapText(context, text, x, y, maxWidth, lineHeight) {
+                const words = text.split(' ');
+                let line = '';
+                let testLine = '';
+                let metrics;
+                let testWidth;
+                let lines = 0;
+
+                for (let i = 0; i < words.length; i++) {
+                    testLine = line + words[i] + ' ';
+                    metrics = context.measureText(testLine);
+                    testWidth = testWidth = metrics.width;
+
+                    if (testWidth > maxWidth && i > 0) {
+                        context.fillText(line.trim(), x, y);
+                        line = words[i] + ' ';
+                        y += lineHeight;
+                        lines++;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                context.fillText(line.trim(), x, y);
+                return y + (lines * lineHeight); // Retorna la altura final
+            }
+
+            // --- Función para dibujar el ícono de Check (✓) ---
+            function drawCheckmark(ctx, x, y, size) {
+                ctx.save();
+                ctx.strokeStyle = COLORS.DONE_ICON;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(x - size / 2, y);
+                ctx.lineTo(x - size / 4, y + size / 2);
+                ctx.lineTo(x + size / 2, y - size / 3);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // --- Función para dibujar Íconos SVG (Path2D) ---
+            function drawIcon(ctx, path, x, y, size, color) {
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2; // Grosor del ícono
+                ctx.translate(x - size / 2, y - size / 2); // Centrar el ícono en X, Y
+                
+                // Escalar el ícono - los paths de Heroicons son de 24x24
+                const scale = size / 24;
+                ctx.scale(scale, scale); 
+                
+                ctx.stroke(path); // Dibujar el path
+                ctx.restore();
+            }
+
+            // --- Función para dibujar el Foco Personalizado ---
+            function drawCustomLightbulbIcon(ctx, x, y, size) {
+                ctx.save();
+
+                // El SVG original es 83w x 122h. Lo escalamos a la altura `size`.
+                const svgHeight = 122;
+                const svgWidth = 83;
+                const scale = size / svgHeight;
+                const scaledWidth = svgWidth * scale;
+
+                // Centramos el dibujo
+                ctx.translate(x - scaledWidth / 2, y - size / 2);
+                ctx.scale(scale, scale);
+                
+                // Definimos los estilos del SVG
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "black";
+                ctx.lineCap = "round";
+                ctx.lineJoin = "round";
+
+                // 1. Dibujar el bulbo (con relleno gris)
+                ctx.fillStyle = "#F0EFEF";
+                ctx.fill(CUSTOM_ICON_LIGHTBULB.bulb);
+                ctx.stroke(CUSTOM_ICON_LIGHTBULB.bulb);
+
+                // 2. Dibujar la base (con relleno amarillo)
+                ctx.fillStyle = "#FFDD35";
+                ctx.fill(CUSTOM_ICON_LIGHTBULB.base);
+                ctx.stroke(CUSTOM_ICON_LIGHTBULB.base);
+
+                // 3. Dibujar la línea de la base
+                ctx.stroke(CUSTOM_ICON_LIGHTBULB.line1);
+
+                // 4. Dibujar filamentos
+                ctx.stroke(CUSTOM_ICON_LIGHTBULB.filament1);
+                ctx.stroke(CUSTOM_ICON_LIGHTBULB.filament2);
+                ctx.stroke(CUSTOM_ICON_LIGHTBULB.filamentWave);
+
+                // 5. Dibujar el rectángulo (convertido a fillRect)
+                ctx.fillStyle = "black";
+                const r = CUSTOM_ICON_LIGHTBULB.rect;
+                ctx.fillRect(r.x, r.y, r.width, r.height);
+
+                ctx.restore();
+            }
+
+
+            // --- Función para dibujar las flechas de flujo ---
+            function drawFlowArrows(ctx, activeStageId) {
+                ctx.save();
+        
+                for (let i = 0; i < STAGES.length - 1; i++) {
+                    const colA = i % NUM_COLS;
+                    const rowA = Math.floor(i / NUM_COLS);
+                    const cardAX = CARD_GRID_PADDING + colA * (CARD_WIDTH + CARD_GRID_PADDING);
+                    const cardAY = CANVAS_PADDING_Y_TOP + rowA * (CARD_HEIGHT + ROW_GAP);
+
+                    const colB = (i + 1) % NUM_COLS;
+                    const rowB = Math.floor((i + 1) / NUM_COLS);
+                    const cardBX = CARD_GRID_PADDING + colB * (CARD_WIDTH + CARD_GRID_PADDING);
+                    const cardBY = CANVAS_PADDING_Y_TOP + rowB * (CARD_HEIGHT + ROW_GAP);
+
+                    // --- LÓGICA DE COLOR DE LÍNEA ---
+                    if (i < activeStageId - 1) {
+                        // Etapa completada: línea azul sólida
+                        ctx.strokeStyle = COLORS.ACTIVE_STROKE;
+                        ctx.setLineDash([]); // Línea sólida
+                        ctx.lineWidth = 3; // Un poco más gruesa
+                    } else {
+                        // Etapa futura: línea gris punteada
+                        ctx.strokeStyle = COLORS.LINE;
+                        ctx.setLineDash([6, 6]);
+                        ctx.lineWidth = 2;
+                    }
+                    // --- FIN DE LÓGICA ---
+
+                    ctx.beginPath();
+                    let startX, startY, endX, endY;
+
+                    if (rowA === rowB) {
+                        // Flecha horizontal
+                        startX = cardAX + CARD_WIDTH;
+                        startY = cardAY + CARD_HEIGHT / 2;
+                        endX = cardBX;
+                        endY = cardBY + CARD_HEIGHT / 2;
+                        ctx.moveTo(startX, startY);
+                        ctx.lineTo(startX + CARD_GRID_PADDING / 2, startY);
+                        ctx.lineTo(endX - CARD_GRID_PADDING / 2, endY);
+                        ctx.lineTo(endX, endY);
+                    } else {
+                        // Flecha vertical (del final de una fila al inicio de la siguiente)
+                        startX = cardAX + CARD_WIDTH / 2;
+                        startY = cardAY + CARD_HEIGHT;
+                        endX = cardBX + CARD_WIDTH / 2;
+                        endY = cardBY;
+                        ctx.moveTo(startX, startY);
+                        ctx.lineTo(startX, startY + ROW_GAP / 2);
+                        ctx.lineTo(endX, endY - ROW_GAP / 2);
+                        ctx.lineTo(endX, endY);
+                    }
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+
+            // 2. Función principal para dibujar la línea de tiempo
+            function drawTimeline(workerName, activeStageId, logo) { // Acepta el logo
+                activeStageId = parseInt(activeStageId);
+                
+                // --- Ajuste dinámico de altura ---
+                const showNote = activeStageId < 8;
+                const CANVAS_HEIGHT = BASE_CANVAS_HEIGHT + (showNote ? NOTE_AREA_HEIGHT : 0);
+                
+                canvas.width = CANVAS_WIDTH;
+                canvas.height = CANVAS_HEIGHT;
+                canvas.style.width = '100%';
+                canvas.style.height = 'auto';
+
+                // --- Limpiar y fondo ---
+                ctx.fillStyle = COLORS.BG;
+                ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+                // --- Dibujar Logo en el Canvas ---
+                if (logo) {
+                    // Aspect ratio del logo 510x146
+                    const logoAspectRatio = 510 / 146;
+                    const logoHeight = 60;
+                    const logoWidth = logoHeight * logoAspectRatio;
+                    const logoX = (CANVAS_WIDTH - logoWidth) / 2;
+                    const logoY = 40;
+                    ctx.drawImage(logo, logoX, logoY, logoWidth, logoHeight);
+                }
+
+                // --- Título y Nombre (Ajustados para el logo) ---
+                ctx.fillStyle = COLORS.TEXT_PRIMARY;
+                ctx.font = FONTS.TITLE;
+                ctx.textAlign = 'center';
+                ctx.fillText('Estatus del Proceso de Separación de Cuentas', CANVAS_WIDTH / 2, 140); 
+                
+                ctx.fillStyle = COLORS.TEXT_SECONDARY;
+                ctx.font = FONTS.SUBTITLE;
+                ctx.fillText(`Trabajador: ${workerName}`, CANVAS_WIDTH / 2, 180); 
+
+                // --- Dibujar Flechas de Flujo (primoro, para que queden detrás) ---
+                drawFlowArrows(ctx, activeStageId);
+
+                // --- Dibujar cada TARJETA de etapa ---
+                STAGES.forEach((stage, index) => {
+                    const col = index % NUM_COLS;
+                    const row = Math.floor(index / NUM_COLS);
+                    const cardX = CARD_GRID_PADDING + col * (CARD_WIDTH + CARD_GRID_PADDING);
+                    const cardY = CANVAS_PADDING_Y_TOP + row * (CARD_HEIGHT + ROW_GAP);
+                    
+                    ctx.save();
+                    
+                    // --- Dibujar Tarjeta (Fondo y Borde) ---
+                    ctx.beginPath();
+                    ctx.roundRect(cardX, cardY, CARD_WIDTH, CARD_HEIGHT, CARD_RADIUS);
+                    
+                    let statusText = "";
+                    let statusColor = COLORS.TEXT_SECONDARY;
+
+                    if (stage.id < activeStageId) {
+                        // --- COMPLETADO ---
+                        ctx.fillStyle = COLORS.DONE_FILL;
+                        ctx.strokeStyle = COLORS.DONE_STROKE;
+                        ctx.lineWidth = 2;
+                        statusText = "Completado";
+                        statusColor = COLORS.DONE_ICON;
+                    } else if (stage.id === activeStageId) {
+                        // --- ACTIVO ---
+                        ctx.fillStyle = COLORS.ACTIVE_FILL;
+                        ctx.strokeStyle = COLORS.ACTIVE_STROKE;
+                        ctx.lineWidth = 4;
+                        ctx.shadowColor = 'rgba(0, 51, 102, 0.3)'; // Sombra azul oscura
+                        ctx.shadowBlur = 15;
+                        statusText = "En Proceso";
+                        statusColor = COLORS.ACTIVE_STROKE;
+                    } else {
+                        // --- FUTURO ---
+                        ctx.fillStyle = COLORS.FUTURE_FILL;
+                        ctx.strokeStyle = COLORS.FUTURE_STROKE;
+                        ctx.lineWidth = 2;
+                        statusText = "Pendiente";
+                        statusColor = COLORS.TEXT_SECONDARY;
+                    }
+                    
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.restore();
+
+                    // --- Contenido de la Tarjeta ---
+                    ctx.save();
+                    const contentX = cardX + 25;
+                    const contentY = cardY + 35;
+
+                    // Círculo del número
+                    ctx.beginPath();
+                    ctx.arc(contentX, contentY, 18, 0, 2 * Math.PI);
+                    ctx.fillStyle = (stage.id <= activeStageId) ? statusColor : COLORS.LINE;
+                    ctx.fill();
+
+                    ctx.fillStyle = COLORS.WHITE;
+                    ctx.font = FONTS.CARD_NUMBER;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(stage.name, contentX, contentY + 7);
+
+                    // --- Lógica de Icono / Checkmark ---
+                    const iconX = cardX + CARD_WIDTH - 30;
+                    const iconY = contentY + 5;
+                    const iconSize = 24;
+
+                    if (stage.id < activeStageId) {
+                        // Etapa Completada: Dibuja Checkmark
+                        drawCheckmark(ctx, iconX, iconY, iconSize);
+                    } else if (stage.id === activeStageId) {
+                        // Etapa Activa: Dibuja Icono temático en color Activo
+                        drawIcon(ctx, stage.icon, iconX, iconY, iconSize, COLORS.ACTIVE_STROKE);
+                    } else {
+                        // Etapa Futura: Dibuja Icono temático en color Futuro
+                        drawIcon(ctx, stage.icon, iconX, iconY, iconSize, COLORS.LINE);
+                    }
+
+
+                    // Título de la etapa (con wrapText)
+                    ctx.fillStyle = (stage.id > activeStageId) ? COLORS.TEXT_SECONDARY : COLORS.TEXT_PRIMARY;
+                    ctx.font = FONTS.CARD_TITLE;
+                    ctx.textAlign = 'left';
+                    wrapText(ctx, stage.longName, cardX + 20, cardY + 80, CARD_WIDTH - 40, 24);
+
+                    // Texto de Estado (al fondo)
+                    ctx.fillStyle = statusColor;
+                    ctx.font = FONTS.CARD_STATUS;
+                    ctx.textAlign = 'left';
+                    ctx.fillText(statusText, cardX + 20, cardY + CARD_HEIGHT - 25);
+                    
+                    ctx.restore();
+
+                    // --- Insignia "¡Estás Aquí!" ---
+                    if (stage.id === activeStageId) {
+                        ctx.save();
+                        const badgeWidth = 120;
+                        const badgeHeight = 32;
+                        const badgeX = cardX + (CARD_WIDTH - badgeWidth) / 2; 
+                        const badgeY = cardY - badgeHeight - 15; // Ajuste para que quede por encima
+
+                        // Sombra
+                        ctx.shadowColor = 'rgba(253, 185, 19, 0.4)'; // Sombra amarilla
+                        ctx.shadowBlur = 10;
+                        
+                        // Recuadro
+                        ctx.fillStyle = COLORS.ACTIVE_BADGE;
+                        ctx.beginPath();
+                        ctx.roundRect(badgeX, badgeY, badgeWidth, badgeHeight, 8);
+                        ctx.fill();
+                        
+                        // Pequeño triángulo que apunta a la tarjeta
+                        ctx.beginPath();
+                        ctx.moveTo(badgeX + badgeWidth / 2 - 8, badgeY + badgeHeight);
+                        ctx.lineTo(badgeX + badgeWidth / 2 + 8, badgeY + badgeHeight);
+                        ctx.lineTo(badgeX + badgeWidth / 2, badgeY + badgeHeight + 8);
+                        ctx.closePath();
+                        ctx.fill();
+
+
+                        // Texto
+                        ctx.fillStyle = COLORS.WHITE;
+                        ctx.font = FONTS.BADGE;
+                        ctx.textAlign = 'center';
+                        ctx.fillText("¡Estás Aquí!", badgeX + badgeWidth / 2, badgeY + 21);
+                        ctx.restore();
+                    }
+                }); // <-- Cierra STAGES.forEach
+
+                // --- Dibujar la NOTA LEGAL (condicional) ---
+                if (showNote) {
+                    const noteY = BASE_CANVAS_HEIGHT - 10; // Posición Y donde empieza la nota
+                    
+                    // Fondo del recuadro de la nota
+                    ctx.save();
+                    ctx.fillStyle = COLORS.NOTE_BG; // Azul claro sutil
+                    ctx.strokeStyle = COLORS.NOTE_STROKE; // Azul oscuro para el borde
+                    ctx.lineWidth = 2; // Borde un poco más grueso
+                    ctx.beginPath();
+                    ctx.roundRect(CARD_GRID_PADDING, noteY, CANVAS_WIDTH - (CARD_GRID_PADDING * 2), NOTE_AREA_HEIGHT - 20, 12);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.restore();
+
+                    // --- Dibuja el icono de foco personalizado ---
+                    const lightbulbIconSize = 40; // Tamaño deseado (altura)
+                    const lightbulbIconX = CARD_GRID_PADDING + 40;
+                    const lightbulbIconY = noteY + 45; // Centrado verticalmente
+                    drawCustomLightbulbIcon(ctx, lightbulbIconX, lightbulbIconY, lightbulbIconSize);
+                    
+                    
+                    // Texto de la nota
+                    ctx.fillStyle = COLORS.NOTE_TEXT;
+                    ctx.font = FONTS.NOTE_TEXT;
+                    ctx.textAlign = 'left';
+                    wrapText(ctx, NOTE_TEXT, CARD_GRID_PADDING + 85, noteY + 25, CANVAS_WIDTH - (CARD_GRID_PADDING * 2) - 110, 20);
+                }
+
+            } // <-- Cierra la función drawTimeline
+
+            // 3. Event Listener para el botón "Generar"
+            generateBtn.addEventListener('click', function(e) {
+                e.preventDefault(); // Previene que el formulario se envíe
+                
+                const name = nameInput.value || "Trabajador";
+                const stageId = stageSelect.value; 
+
+                // Dibuja la imagen en el canvas (pasando el logo)
+                drawTimeline(name, stageId, logoImage); 
+
+                // Prepara el botón de descarga
+                const dataURL = canvas.toDataURL('image/png'); // Convierte el canvas a imagen
+                const fileName = `estatus_${name.replace(/ /g, '_').toLowerCase()}.png`;
+                
+                downloadBtn.href = dataURL;
+                downloadBtn.download = fileName;
+                
+                // Muestra el botón de descarga
+                downloadBtn.classList.remove('hidden');
+                downloadBtn.classList.add('block');
+            });
+
+            // El dibujado inicial se llama desde logoImage.onload
+            // drawTimeline("Juan Pérez", 3);
+            
+            // Polyfill para roundRect si el navegador no lo soporta
+            if (CanvasRenderingContext2D.prototype.roundRect === undefined) {
+                CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius) {
+                    if (typeof radius === 'number') {
+                        radius = { tl: radius, tr: radius, br: radius, bl: radius };
+                    } else {
+                        radius = { tl: 0, tr: 0, br: 0, bl: 0, ...radius };
+                    }
+                    this.beginPath();
+                    this.moveTo(x + radius.tl, y);
+                    this.lineTo(x + width - radius.tr, y);
+                    this.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+                    this.lineTo(x + width, y + height - radius.br);
+                    this.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+                    this.lineTo(x + radius.bl, y + height);
+                    this.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+                    this.lineTo(x, y + radius.tl);
+                    this.quadraticCurveTo(x, y, x + radius.tl, y);
+                    this.closePath();
+                    return this;
+                };
+            }
+        }; // <-- Cierra window.onload
+    </script> 
+
+</body>
+</html>
+
