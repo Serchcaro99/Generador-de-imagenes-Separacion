@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Estatus de Separación V2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Colores personalizados basados en el logo */
+        .bg-afore-blue { background-color: #003366; } /* Azul oscuro del logo */
+        .text-afore-blue { color: #003366; }
+        .border-afore-blue { border-color: #003366; }
+        .hover\:bg-afore-blue-darker:hover { background-color: #002244; } /* Un azul más oscuro al hacer hover */
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-7xl w-full">
+        
+                <div id="logoContainer" class="flex justify-center mb-6 h-16"></div>
+
+        <h1 class="text-3xl font-extrabold text-center text-afore-blue mb-4">
+            Estatus del Proceso de Separación de Cuentas
+        </h1>
+        <p class="text-center text-gray-600 mb-8 text-lg">
+            Genera la imagen personalizada del estado del trámite.
+        </p>
+
+        
+
+<form id="generatorForm" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 items-end">
+            <div class="md:col-span-1">
+                <label for="nameInput" class="block text-sm font-semibold text-gray-800 mb-1">
+                    Nombre del Trabajador
+                </label>
+                <input type="text" id="nameInput" value="Juan Pérez" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all">
+            </div>
+
+            <div class="md:col-span-1">
+                <label for="stageSelect" class="block text-sm font-semibold text-gray-800 mb-1">
+                    Selecciona la Etapa Actual
+                </label>
+                <select id="stageSelect" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:ring-blue-500 focus:border-blue-500 transition-all">
+                    
+</select>
+            </div>
+
+            <button type="button" id="generateBtn" class="w-full md:col-span-1 bg-afore-blue text-white p-3 rounded-lg font-bold text-lg hover:bg-afore-blue-darker transition-all shadow-lg transform hover:scale-105 h-[46px]" disabled>
+                Cargando...
+            </button>
+        </form>
+
+        
+
+<div class="border border-gray-300 rounded-xl overflow-hidden shadow-xl bg-gray-50 p-4">
+            <canvas id="timelineCanvas" class="w-full h-auto block mx-auto"></canvas>
+            
+            <a id="downloadBtn" href="#" download="estatus_separacion.png" class="hidden w-full bg-green-600 text-white p-3 rounded-lg font-bold text-lg hover:bg-green-700 transition-all shadow-lg text-center mt-6 transform hover:scale-105">
+                2. Descargar Imagen
+            </a>
+        </div>
+
+    </div> 
+
+<script type="module">
+        // --- (Iconos SVG como STRINGS) ---
+        const ICON_SVG_STRINGS = {
+            icon1: `<svg width="152" height="159" viewBox="0 0 152 159" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M71.0216 74.7372L81.0718 83.5187L14.5941 152.946C12.0719 155.58 7.84454 155.77 5.09962 153.371C2.2945 150.92 2.10805 146.709 4.68547 144.017L71.0216 74.7372Z" fill="#FFDD35"/>
+<path d="M79.6267 83.5833L13.852 152.277C11.7079 154.516 8.11342 154.677 5.77989 152.639C3.39524 150.555 3.23682 146.974 5.42794 144.686L71.083 76.1181L79.6267 83.5833Z" stroke="black" stroke-width="2"/>
+<path d="M68 97.2305L59 89.7305L64 84.7305L72 91.2305L68 97.2305Z" fill="black"/>
+<ellipse cx="40.4368" cy="39.3516" rx="40.4368" ry="39.3516" transform="matrix(0.974778 0.223178 -0.236415 0.971652 68.8613 4.26367)" fill="#F3FAFF"/>
+<mask id="path-5-inside-1_3188_27499" fill="white">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M86.7394 101.572C115.259 108.102 143.835 90.9683 150.567 63.3031C157.298 35.6379 139.635 7.91759 111.115 1.38796C82.5959 -5.14166 54.0195 11.9921 47.2882 39.6573C40.557 67.3224 58.2198 95.0428 86.7394 101.572ZM89.6287 89.7164C111.398 94.7006 133.211 81.6221 138.349 60.505C143.487 39.3878 130.005 18.2284 108.235 13.2443C86.4659 8.26015 64.6532 21.3386 59.5151 42.4558C54.377 63.5729 67.8593 84.7323 89.6287 89.7164Z"/>
+</mask>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M86.7394 101.572C115.259 108.102 143.835 90.9683 150.567 63.3031C157.298 35.6379 139.635 7.91759 111.115 1.38796C82.5959 -5.14166 54.0195 11.9921 47.2882 39.6573C40.557 67.3224 58.2198 95.0428 86.7394 101.572ZM89.6287 89.7164C111.398 94.7006 133.211 81.6221 138.349 60.505C143.487 39.3878 130.005 18.2284 108.235 13.2443C86.4659 8.26015 64.6532 21.3386 59.5151 42.4558C54.377 63.5729 67.8593 84.7323 89.6287 89.7164Z" fill="#FFDD35"/>
+<path d="M150.567 63.3031L152.51 63.7759L150.567 63.3031ZM86.7394 101.572L86.293 103.522H86.293L86.7394 101.572ZM111.115 1.38796L111.562 -0.561591L111.115 1.38796ZM47.2882 39.6573L49.2316 40.1301L47.2882 39.6573ZM138.349 60.505L136.406 60.0321V60.0321L138.349 60.505ZM89.6287 89.7164L90.075 87.7669L89.6287 89.7164ZM59.5151 42.4558L61.4584 42.9286L59.5151 42.4558ZM148.623 62.8303C142.162 89.384 114.688 105.92 87.1857 99.6228L86.293 103.522C115.83 110.284 145.508 92.5526 152.51 63.7759L148.623 62.8303ZM110.669 3.33752C138.153 9.63002 155.079 36.2992 148.623 62.8303L152.51 63.7759C159.517 34.9767 141.117 6.20516 111.562 -0.561591L110.669 3.33752ZM49.2316 40.1301C55.6924 13.5764 83.1666 -2.95925 110.669 3.33752L111.562 -0.561591C82.0252 -7.32407 52.3466 10.4078 45.3449 39.1844L49.2316 40.1301ZM87.1857 99.6228C59.7019 93.3304 42.7762 66.6611 49.2316 40.1301L45.3449 39.1844C38.3377 67.9837 56.7378 96.7552 86.293 103.522L87.1857 99.6228ZM136.406 60.0321C131.538 80.0379 110.827 92.5182 90.075 87.7669L89.1823 91.666C111.969 96.883 134.884 83.2064 140.292 60.9778L136.406 60.0321ZM107.789 15.1939C128.523 19.9409 141.268 40.049 136.406 60.0321L140.292 60.9778C145.706 38.7265 131.487 16.516 108.682 11.2947L107.789 15.1939ZM61.4584 42.9286C66.326 22.9228 87.0366 10.4426 107.789 15.1939L108.682 11.2947C85.8952 6.07774 62.9803 19.7543 57.5718 41.9829L61.4584 42.9286ZM90.075 87.7669C69.3414 83.0198 56.5963 62.9117 61.4584 42.9286L57.5718 41.9829C52.1578 64.2342 66.3773 86.4447 89.1823 91.666L90.075 87.7669Z" fill="black" mask="url(#path-5-inside-1_3188_27499)"/>
+<path d="M115.938 26.6904C127.709 32.8337 132.914 46.1952 128.865 58.096" stroke="black" stroke-width="2"/>
+</svg>`,
+            icon2: `<svg width="122" height="120" viewBox="0 0 122 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3188_25259)">
+<path d="M97.1413 8.09342V27.6172V83.8077V112.855C97.1413 117.808 93.9667 119.046 92.3794 119.046H6.18925C2.37974 119.046 1.1099 114.919 0.951172 112.855V8.09342C0.951172 2.76009 4.44322 1.42676 6.18925 1.42676H92.3794C96.9508 1.42676 97.4587 5.8712 97.1413 8.09342Z" fill="white"/>
+<path d="M49.5866 16.2993C51.2394 16.2993 52.6359 17.3626 52.6359 18.6218C52.6359 19.5785 53.4314 20.3535 54.4129 20.3535C55.3952 20.3535 56.1907 19.5785 56.1907 18.6218C56.1907 15.9716 54.1433 13.737 51.364 13.0543L51.364 10.7786C51.364 9.82192 50.568 9.04687 49.5866 9.04687C48.6047 9.04687 47.8092 9.82192 47.8092 10.7786L47.8092 13.0543C45.029 13.737 42.9829 15.9711 42.9829 18.6218C42.9829 21.7445 45.8236 24.2907 49.3592 24.3965C49.3939 24.3982 49.4269 24.4065 49.4616 24.4065C51.1424 24.4065 52.5105 25.4468 52.5105 26.7277C52.5105 27.9848 51.1144 29.0485 49.4616 29.0485C47.8092 29.0485 46.4122 27.9852 46.4122 26.7277C46.4122 25.7702 45.6167 24.9956 44.6348 24.9956C43.6529 24.9956 42.8574 25.7702 42.8574 26.7277C42.8574 29.4157 44.9663 31.6753 47.8083 32.3203L47.8083 33.9814C47.8083 34.9381 48.6038 35.7135 49.5857 35.7135C50.5671 35.7135 51.3631 34.9381 51.3631 33.9814L51.3631 32.2644C54.0792 31.5466 56.0643 29.3368 56.0643 26.7277C56.0643 23.6045 53.2232 21.0592 49.6876 20.9534C49.6533 20.9517 49.6208 20.943 49.5857 20.943C47.9324 20.943 46.5363 19.8797 46.5363 18.6214C46.5372 17.363 47.9333 16.2993 49.5866 16.2993Z" fill="#006FB9"/>
+<path d="M30.
